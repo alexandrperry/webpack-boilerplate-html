@@ -1,0 +1,13 @@
+<% var data = {
+    title: "Index",
+    author: "Alex"
+  }; %>
+<%= _.template(require('./../includes/header.html'))(data) %>
+  
+<div class="container ">
+    <p class="text">text</p>
+    <img src="./img/image1.jpg" alt="image">
+    <a href="./test.html">Link to Test</a>
+</div>
+  
+<%= _.template(require('./../includes/footer.html'))(data) %>
