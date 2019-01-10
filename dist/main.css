@@ -1,0 +1,12 @@
+h1 {
+  color: blue; }
+
+body {
+  background-color: red;
+  font-size: 20px; }
+
+div.containerImage {
+  background-image: url("./img/image1.jpg");
+  width: 100px;
+  height: 100px; }
+

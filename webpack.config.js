@@ -16,47 +16,61 @@ function generateHtmlPlugins(templateDir) {
     })
 }
 const htmlPlugins = generateHtmlPlugins('./src/html/views')
-module.exports = {
-    entry: [
-        './src/index.js'
-    ],
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'main.js'
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(gif|png|jpe?g|svg)$/i,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: "img/[name].[ext]"
+
+// const env = process.env.WEBPACK_MODE 
+
+// console.log(env)
+
+
+module.exports = (env, argv) => {
+    console.log(argv.mode)
+    return {
+        entry: [
+            './src/index.js'
+        ],
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'main.js'
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.(gif|png|jpe?g|svg)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: "img/[name].[ext]?[hash]",
+                                publicPath: '../',
+                                publicPath: argv.mode === 'production' ? '../../' : './',
+                                useRelativePaths: true
+                            },
+                            
                         }
-                    }
-                ]
-            },
-            {
-                test: /\.html$/,
-                include: path.resolve(__dirname, 'src/html/includes'),
-                use: ['raw-loader']
-            },
-            {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader"]
-            },
-            {
-                test: /\.sass$/,
-                use: [
-                  MiniCssExtractPlugin.loader,
-                  "css-loader",
-                  "sass-loader"
-                ]
-            }
-        ]
-    },
-    plugins: [
-        new MiniCssExtractPlugin({filename: 'main.css'})
-    ].concat(htmlPlugins)
-}
+                    ]
+                },
+                {
+                    test: /\.html$/,
+                    include: path.resolve(__dirname, 'src/html/includes'),
+                    use: ['raw-loader']
+                },
+                {
+                    test: /\.css$/,
+                    use: [MiniCssExtractPlugin.loader, "css-loader"]
+                },
+                {
+                    test: /\.sass$/,
+                    use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader?url=false",
+                    "sass-loader"
+                    ]
+                }
+            ]
+        },
+        plugins: [
+            new MiniCssExtractPlugin({filename: 'main.css'})
+        ].concat(htmlPlugins)
+    }
+};
+
